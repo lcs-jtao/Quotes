@@ -8,6 +8,7 @@
 import Foundation
 
 struct Quote: Decodable, Identifiable {
+    let id = UUID()
     let quoteText: String
     let quoteAuthor: String
     let senderName: String
