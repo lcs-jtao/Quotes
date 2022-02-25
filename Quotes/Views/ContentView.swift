@@ -13,6 +13,7 @@ struct ContentView: View {
     
     // Holds the current joke
     @State var currentQuote: Quote = Quote(quoteText: "", quoteAuthor: "", senderName: "", senderLink: "", quoteLink: "")
+    @State var favourites: [Quote] = []
     
     // MARK: Computed properties
     var body: some View {
@@ -39,6 +40,9 @@ struct ContentView: View {
             Image(systemName: "heart.circle")
                 .resizable()
                 .frame(width: 40, height: 40)
+                .onTapGesture {
+                    favourites.append(currentQuote)
+                }
             
             Button(action: {
                 print("Button was pressed")
@@ -57,9 +61,8 @@ struct ContentView: View {
                 Spacer()
             }
             
-            List {
-                Text("Nothing is a waste of time if you use the experience wisely.")
-                Text("If your actions inspire others to dream more, learn more, do more and become more, you are a leader.")
+            List(favourites) { currentQuote in
+                Text(currentQuote.quoteText)
             }
             
             Spacer()
