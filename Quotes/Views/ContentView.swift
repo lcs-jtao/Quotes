@@ -14,6 +14,7 @@ struct ContentView: View {
     // Holds the current joke
     @State var currentQuote: Quote = Quote(quoteText: "", quoteAuthor: "", senderName: "", senderLink: "", quoteLink: "")
     @State var favourites: [Quote] = []
+    @State var currentQuoteAddedToFavourites: Bool = false
     
     // MARK: Computed properties
     var body: some View {
@@ -41,7 +42,10 @@ struct ContentView: View {
                 .resizable()
                 .frame(width: 40, height: 40)
                 .onTapGesture {
-                    favourites.append(currentQuote)
+                    if currentQuoteAddedToFavourites == false {
+                        favourites.append(currentQuote)
+                        currentQuoteAddedToFavourites = true
+                    }
                 }
             
             Button(action: {
@@ -90,6 +94,8 @@ struct ContentView: View {
             let (data, _) = try await urlSession.data(for: request)
 
             currentQuote = try JSONDecoder().decode(Quote.self, from: data)
+            
+            currentQuoteAddedToFavourites = false
         } catch {
             print("Could not retrieve or decode the JSON from endpoint.")
 
