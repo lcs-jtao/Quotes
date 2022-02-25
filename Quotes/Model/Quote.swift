@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Quote: Decodable, Identifiable {
+struct Quote: Decodable, Hashable {
     let id = UUID()
     let quoteText: String
     let quoteAuthor: String

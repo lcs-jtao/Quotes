@@ -61,7 +61,7 @@ struct ContentView: View {
                 Spacer()
             }
             
-            List(favourites) { currentQuote in
+            List(favourites, id: \.self) { currentQuote in
                 Text(currentQuote.quoteText)
             }
             
