@@ -22,6 +22,7 @@ struct ContentView: View {
             
             VStack(spacing: 20) {
                 Text(currentQuote.quoteText)
+                    .minimumScaleFactor(0.5)
 
                 HStack {
                     Spacer()
@@ -47,6 +48,7 @@ struct ContentView: View {
                         currentQuoteAddedToFavourites = true
                     }
                 }
+                .foregroundColor(currentQuoteAddedToFavourites == true ? .red : .secondary)
             
             Button(action: {
                 print("Button was pressed")
