@@ -104,6 +104,32 @@ struct ContentView: View {
         }
     }
     
+    func persistFavourites() {
+        
+        let filename = getDocumentsDirectory().appendingPathComponent(savedFavouritesLabel)
+        
+        do {
+            let encoder = JSONEncoder()
+
+            encoder.outputFormatting = .prettyPrinted
+            
+            let data = try encoder.encode(favourites)
+            
+            try data.write(to: filename, options: [.atomicWrite, .completeFileProtection])
+            
+            print("Saved data to documents directory successfully.")
+            print("===")
+            print(String(data: data, encoding: .utf8)!)
+            
+        } catch {
+            
+            print(error.localizedDescription)
+            print("Unable to write list of favourites to documents directory in app bundle on device.")
+            
+        }
+
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
