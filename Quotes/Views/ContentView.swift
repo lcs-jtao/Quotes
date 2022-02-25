@@ -42,6 +42,9 @@ struct ContentView: View {
             
             Button(action: {
                 print("Button was pressed")
+                Task {
+                    await loadNewQuote()
+                }
             }, label: {
                 Text("Another one!")
             })
@@ -63,39 +66,32 @@ struct ContentView: View {
                         
         }
         .task {
-            // Assemble the URL that points to the endpoint
-            let url = URL(string: "https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en")!
+            await loadNewQuote()
             
-            // Define the type of data we want from the endpoint
-            // Configure the request to the website
-            var request = URLRequest(url: url)
-            
-            // Ask for JSON data
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            
-            // Start a session to interact (talk with) the endpoint
-            let urlSession = URLSession.shared
-            
-            // Try to fetch a new joke
-            // It might not work, so we use a do-catch block
-            do {
-                // Got the raw data from the endpoint
-                let (data, _) = try await urlSession.data(for: request)
-                
-                // Attempt to decode the raw data into a Swift structure
-                // Takes what is in "data" and tries to put it into "currentJoke"
-                //                              DATA TYPE TO DECODE TO
-                //                                       |
-                //                                       V
-                currentQuote = try JSONDecoder().decode(Quote.self, from: data)
-            } catch {
-                print("Could not retrieve or decode the JSON from endpoint.")
-                // Print the contents of the "error" constant that the do-catch block populates
-                print(error)
-            }
+            print("Have just attempted to load a new quote.")
         }
         .navigationTitle("Quotes")
         .padding()
+    }
+    
+    func loadNewQuote() async {
+        let url = URL(string: "https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en")!
+        
+        var request = URLRequest(url: url)
+        
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        let urlSession = URLSession.shared
+        
+        do {
+            let (data, _) = try await urlSession.data(for: request)
+
+            currentQuote = try JSONDecoder().decode(Quote.self, from: data)
+        } catch {
+            print("Could not retrieve or decode the JSON from endpoint.")
+
+            print(error)
+        }
     }
     
 }
