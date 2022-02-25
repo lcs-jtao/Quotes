@@ -100,6 +100,8 @@ struct ContentView: View {
             await loadNewQuote()
             
             print("Have just attempted to load a new quote.")
+            
+            loadFavourites()
         }
         .navigationTitle("Quotes")
         .padding()
@@ -151,6 +153,30 @@ struct ContentView: View {
             
         }
 
+    }
+    
+    func loadFavourites() {
+        
+        let filename = getDocumentsDirectory().appendingPathComponent(savedFavouritesLabel)
+        print(filename)
+                
+        do {
+            
+            let data = try Data(contentsOf: filename)
+            
+            print("Got data from file, contents are:")
+            print(String(data: data, encoding: .utf8)!)
+
+            favourites = try JSONDecoder().decode([Quote].self, from: data)
+            
+        } catch {
+            
+            print(error.localizedDescription)
+            print("Could not load data from file, initializing with tasks provided to initializer.")
+
+        }
+
+        
     }
     
 }
