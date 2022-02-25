@@ -11,6 +11,8 @@ struct ContentView: View {
     
     // MARK: Stored properties
     
+    @Environment(\.scenePhase) var scenePhase
+    
     // Holds the current joke
     @State var currentQuote: Quote = Quote(quoteText: "", quoteAuthor: "", senderName: "", senderLink: "", quoteLink: "")
     @State var favourites: [Quote] = []
@@ -73,6 +75,27 @@ struct ContentView: View {
             Spacer()
                         
         }
+        
+        .onChange(of: scenePhase) { newPhase in
+            
+            if newPhase == .inactive {
+                
+                print("Inactive")
+                
+            } else if newPhase == .active {
+                
+                print("Active")
+                
+            } else if newPhase == .background {
+                
+                print("Background")
+                
+                persistFavourites()
+                
+            }
+            
+        }
+        
         .task {
             await loadNewQuote()
             
