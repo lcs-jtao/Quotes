@@ -23,11 +23,11 @@ struct ContentView: View {
             VStack(spacing: 20) {
                 Text(currentQuote.quoteText)
                     .minimumScaleFactor(0.5)
+                    .font(.title)
 
                 HStack {
                     Spacer()
                     Text("- \(currentQuote.quoteAuthor)")
-                        .font(.caption)
                         .italic()
                 }
             }
@@ -40,8 +40,7 @@ struct ContentView: View {
                 .padding(10)
             
             Image(systemName: "heart.circle")
-                .resizable()
-                .frame(width: 40, height: 40)
+                .font(.largeTitle)
                 .onTapGesture {
                     if currentQuoteAddedToFavourites == false {
                         favourites.append(currentQuote)
@@ -63,7 +62,7 @@ struct ContentView: View {
             HStack {
                 Text("Favourites")
                     .bold()
-                    .font(.title)
+                    .font(.title2)
                 Spacer()
             }
             
